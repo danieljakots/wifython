@@ -145,6 +145,7 @@ def netclean():
     subprocess.call(['/sbin/ifconfig ' + WIFI_IF +
                      ' -nwid -wpakey -nwkey -bssid'], shell=True)
     subprocess.call(['/sbin/ifconfig ' + WIFI_IF + ' down'], shell=True)
+    subprocess.call(['/sbin/ifconfig ' + WIFI_IF + ' -inet'], shell=True)
     subprocess.call(['/sbin/ifconfig ' + LAN_IF + ' down'], shell=True)
     subprocess.call(['/sbin/ifconfig ' + LAN_IF + ' -inet'], shell=True)
     subprocess.call(['/sbin/ifconfig trunk0 destroy 2>/dev/null'], shell=True)
