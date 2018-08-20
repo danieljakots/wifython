@@ -8,7 +8,7 @@ import sys
 
 DATA_FILE = "/home/user/.db.json"
 LAN_IF = "em0"
-WIFI_IF = "iwn0"
+WIFI_IF = "iwm0"
 
 
 def usage():
