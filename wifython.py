@@ -113,7 +113,7 @@ def gentrunkhostnameif(network):
 
     with open(hostnameif, "w") as f:
         try:
-            f.write("nwid " + data[network]["SSID"] + "\n")
+            f.write("nwid " + data[network]["SSID"] + " ")
             if data[network]["password_type"] == "wpa":
                 f.write("wpakey " + data[network]["password"] + "\n")
             elif data[network]["password_type"] == "wep":
@@ -123,7 +123,7 @@ def gentrunkhostnameif(network):
             print("No such network", file=sys.stderr)
             sys.exit(1)
     with open("/etc/hostname.trunk0", "w") as f:
-        f.write("trunkproto failover trunkport " + LAN_IF + "\n")
+        f.write("trunkproto failover trunkport " + LAN_IF + " ")
         f.write("trunkport " + WIFI_IF + "\n")
         f.write("dhcp\n")
 
