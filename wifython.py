@@ -95,11 +95,13 @@ def genhostnameif(network):
 
         with open(hostnameif, "w") as f:
             try:
-                f.write("nwid " + data[network]["SSID"] + "\n")
+                f.write("nwid " + data[network]["SSID"])
                 if data[network]["password_type"] == "wpa":
-                    f.write("wpakey " + data[network]["password"] + "\n")
+                    f.write(" wpakey " + data[network]["password"] + "\n")
                 elif data[network]["password_type"] == "wep":
-                    f.write("nwkey " + data[network]["password"] + "\n")
+                    f.write(" nwkey " + data[network]["password"] + "\n")
+                else:
+                    f.write("\n")
                 f.write("dhcp\n")
             except KeyError:
                 print("No such network", file=sys.stderr)
