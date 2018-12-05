@@ -89,30 +89,10 @@ def genhostnameif(network):
             if network == "lan6":
                 f.write("inet6 autoconf")
     else:
-        hostnameif = "/etc/hostname." + WIFI_IF
-        with open(DATA_FILE, "r") as f:
-            data = json.load(f)
-
-        with open(hostnameif, "w") as f:
-            try:
-                f.write("nwid " + data[network]["SSID"])
-                if data[network]["password_type"] == "wpa":
-                    f.write(" wpakey " + data[network]["password"] + "\n")
-                elif data[network]["password_type"] == "wep":
-                    f.write(" nwkey " + data[network]["password"] + "\n")
-                else:
-                    f.write("\n")
-                f.write("dhcp\n")
-            except KeyError:
-                print("No such network", file=sys.stderr)
-                sys.exit(1)
+        genwifihostnameif(network)
 
 
-def gentrunkhostnameif(network):
-    hostnameif = "/etc/hostname." + LAN_IF
-    with open(hostnameif, "w") as f:
-        f.write("up\n")
-
+def genwifihostnameif(network, mode="wifi"):
     hostnameif = "/etc/hostname." + WIFI_IF
     with open(DATA_FILE, "r") as f:
         data = json.load(f)
@@ -126,10 +106,22 @@ def gentrunkhostnameif(network):
                 f.write(" nwkey " + data[network]["password"] + "\n")
             else:
                 f.write("\n")
-            f.write("up\n")
+            if mode == "wifi":
+                f.write("dhcp\n")
+            elif mode == "trunk":
+                f.write("up\n")
         except KeyError:
             print("No such network", file=sys.stderr)
             sys.exit(1)
+
+
+def gentrunkhostnameif(network):
+    hostnameif = "/etc/hostname." + LAN_IF
+    with open(hostnameif, "w") as f:
+        f.write("up\n")
+
+    genwifihostnameif(network, mode="trunk")
+
     with open("/etc/hostname.trunk0", "w") as f:
         f.write("trunkproto failover trunkport " + LAN_IF + " ")
         f.write("trunkport " + WIFI_IF + "\n")
